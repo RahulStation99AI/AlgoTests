@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Text.Json;
+using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Orchestration;
 
 namespace AiAgents.FinancialAdvisor.Agent
 {
@@ -8,8 +12,36 @@ namespace AiAgents.FinancialAdvisor.Agent
     /// </summary>
     public class FinancialAdvisorAgent
     {
-        // State: collected user data
+        private readonly IKernel kernel;
         private Dictionary<string, object> userInputs = new();
+        
+        // Azure OpenAI Configuration
+        public class AzureOpenAIConfig
+        {
+            public string Endpoint { get; set; } = "https://agenticai-rahul.openai.azure.com/";
+            public string ApiKey { get; set; } = "CQmkc9em0xl3xqGza6YlYihsMhIoocjynae99w2Wm5TprvUbAleHJQQJ99BIACMsfrFXJ3w3AAABACOGoYLR";
+            public string DeploymentName { get; set; } = "";
+        }
+
+        private const string SystemPrompt = @"You are an expert financial advisor AI assistant. You provide professional, accurate, 
+and personalized retirement planning advice based on the user's financial information and goals. Keep responses concise and focused 
+on actionable recommendations.";
+
+        public static IKernel CreateKernel(AzureOpenAIConfig config)
+        {
+            var builder = new KernelBuilder();
+            builder.WithAzureChatCompletionService(
+                deploymentName: config.DeploymentName,
+                endpoint: config.Endpoint,
+                apiKey: config.ApiKey
+            );
+            return builder.Build();
+        }
+
+        public FinancialAdvisorAgent(IKernel kernel)
+        {
+            this.kernel = kernel;
+        }
 
         // List of prompts based on requirements
         private readonly List<(string key, string prompt)> prompts = new()
@@ -48,30 +80,90 @@ namespace AiAgents.FinancialAdvisor.Agent
         }
 
         // Main agent logic: process collected inputs and generate a sample answer
-        public string Advise()
+        public async Task<string> AdviseAsync()
         {
-            // In a real implementation, use all collected inputs and requirements/design logic
-            // Here, just demonstrate using the collected data
             if (userInputs.Count == 0)
                 return "No user data collected. Please provide inputs.";
 
-            // Example: Calculate a simple readiness score
-            int age = Convert.ToInt32(userInputs["Age"] ?? 0);
-            double savings = Convert.ToDouble(userInputs["CurrentSavings_Taxable"] ?? 0)
-                + Convert.ToDouble(userInputs["CurrentSavings_IRA"] ?? 0)
-                + Convert.ToDouble(userInputs["CurrentSavings_401K"] ?? 0)
-                + Convert.ToDouble(userInputs["CurrentSavings_RothIRA"] ?? 0);
-            double annualIncome = Convert.ToDouble(userInputs["AnnualIncome"] ?? 0);
-            double desiredIncome = Convert.ToDouble(userInputs["DesiredRetirementIncome"] ?? 0);
-            int retirementAge = Convert.ToInt32(userInputs["ExpectedRetirementAge"] ?? 65);
+            var context = new ContextVariables();
+            context.Set("systemPrompt", SystemPrompt);
 
-            // Dummy logic for demonstration
-            double readinessScore = (savings + (retirementAge - age) * annualIncome * 0.15) / (desiredIncome * 20.0);
-            readinessScore = Math.Max(0, Math.Min(1, readinessScore));
+            // Format user data into a structured input
+            var userData = new
+            {
+                Age = Convert.ToInt32(userInputs["Age"] ?? 0),
+                CurrentSavings = new
+                {
+                    Taxable = Convert.ToDouble(userInputs["CurrentSavings_Taxable"] ?? 0),
+                    IRA = Convert.ToDouble(userInputs["CurrentSavings_IRA"] ?? 0),
+                    _401K = Convert.ToDouble(userInputs["CurrentSavings_401K"] ?? 0),
+                    RothIRA = Convert.ToDouble(userInputs["CurrentSavings_RothIRA"] ?? 0)
+                },
+                AnnualIncome = Convert.ToDouble(userInputs["AnnualIncome"] ?? 0),
+                MonthlyContribution = Convert.ToDouble(userInputs["MonthlyContribution"] ?? 0),
+                ExpectedRetirementAge = Convert.ToInt32(userInputs["ExpectedRetirementAge"] ?? 65),
+                DesiredRetirementIncome = Convert.ToDouble(userInputs["DesiredRetirementIncome"] ?? 0),
+                RiskTolerance = userInputs["RiskTolerance"]?.ToString(),
+                InvestmentPreferences = userInputs["InvestmentPreferences"]?.ToString(),
+                CurrentDebt = Convert.ToDouble(userInputs["CurrentDebt"] ?? 0),
+                OtherIncomeSources = userInputs["OtherIncomeSources"]?.ToString(),
+                InflationRate = Convert.ToDouble(userInputs["InflationRate"]?.ToString()?.TrimEnd('%') ?? "2.5") / 100,
+                LifeExpectancy = Convert.ToInt32(userInputs["LifeExpectancy"] ?? 85),
+                MarketConditions = userInputs["MarketConditions"]?.ToString(),
+                TaxConsiderations = userInputs["TaxConsiderations"]?.ToString(),
+                HealthStatus = userInputs["HealthStatus"]?.ToString()
+            };
 
-            return $"Retirement Readiness Score: {readinessScore:F2}\n" +
-                   $"Projected Retirement Savings: ${(savings + (retirementAge - age) * annualIncome * 0.15):F0}\n" +
-                   $"Recommended Action: {(readinessScore > 0.8 ? "On track!" : "Increase savings or adjust goals.")}";
+            // Create the prompt for retirement planning analysis
+            string prompt = $@"Based on the following financial information, provide a detailed retirement planning analysis with specific recommendations:
+
+{JsonSerializer.Serialize(userData, new JsonSerializerOptions { WriteIndented = true })}
+
+Please include:
+1. Retirement readiness assessment
+2. Projected retirement savings
+3. Specific recommendations for improving retirement readiness
+4. Tax optimization strategies
+5. Risk management considerations
+
+Focus on actionable advice and specific steps the user can take.";
+
+            context.Set("input", prompt);
+
+            // Use Semantic Kernel to get AI-powered advice
+            var result = await kernel.InvokeSemanticFunctionAsync(context);
+
+            return result.GetValue<string>() ?? "Unable to generate advice at this time.";
+        }
+
+        public async Task<string> GetQuickAdviceAsync(string question)
+        {
+            var context = new ContextVariables();
+            context.Set("systemPrompt", SystemPrompt);
+            context.Set("input", $"Based on the following user data:\n{JsonSerializer.Serialize(userInputs, new JsonSerializerOptions { WriteIndented = true })}\n\nPlease answer this specific question: {question}");
+
+            var result = await kernel.InvokeSemanticFunctionAsync(context);
+            return result.GetValue<string>() ?? "Unable to provide advice at this time.";
+        }
+
+        public async Task<string> AnalyzeScenarioAsync(string scenario)
+        {
+            var context = new ContextVariables();
+            context.Set("systemPrompt", SystemPrompt);
+            context.Set("input", $"Given the user's financial profile:\n{JsonSerializer.Serialize(userInputs, new JsonSerializerOptions { WriteIndented = true })}\n\nAnalyze this scenario: {scenario}\n\nProvide specific recommendations and impact analysis.");
+
+            var result = await kernel.InvokeSemanticFunctionAsync(context);
+            return result.GetValue<string>() ?? "Unable to analyze scenario at this time.";
+        }
+
+        public async Task<string> GetInvestmentAdviceAsync(double amount, string timeframe, string riskLevel)
+        {
+            var context = new ContextVariables();
+            context.Set("systemPrompt", SystemPrompt);
+            context.Set("input", $"Considering the user's financial profile and these specific parameters:\n- Amount: ${amount:N0}\n- Timeframe: {timeframe}\n- Risk Level: {riskLevel}\n\nProvide specific investment recommendations and allocation advice.");
+
+            var result = await kernel.InvokeSemanticFunctionAsync(context);
+            return result.GetValue<string>() ?? "Unable to provide investment advice at this time.";
         }
     }
 }

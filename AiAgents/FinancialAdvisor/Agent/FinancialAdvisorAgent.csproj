@@ -4,4 +4,7 @@
     <RootNamespace>AiAgents.FinancialAdvisor.Agent</RootNamespace>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.64.0" />
+  </ItemGroup>
 </Project>
