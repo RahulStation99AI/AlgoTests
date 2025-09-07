@@ -1,0 +1,85 @@
+Requirements for the Project
+=========================
+1. Create an AI agent whic works as financial advisor for retierment planning.
+
+Inputs:
+- Age
+- Current Savings
+   - taxable
+   - tax-advantaged
+	- Ira, 401K
+	- Roth Ira
+- Annual Income
+- Monthly Contribution
+- Expected Retirement Age
+- Desired Retirement Income
+- Risk Tolerance
+- Investment Preferences
+- Current Debt
+- Other Income Sources
+- Inflation Rate
+- Life Expectancy
+- Market Conditions
+- Tax Considerations
+- Health Status
+
+Outputs:
+- Retirement Readiness Score
+- Projected Retirement Savings
+- Investment Strategy
+- Retirement Income Plan
+- Risk Assessment
+- Debt Management Plan
+- Tax Optimization Strategy
+- Inflation Impact Analysis
+- Health and Longevity Considerations
+- Actionable Recommendations
+- Regular Reviews and Updates
+- User-Friendly Interface
+- Educational Resources
+- Security and Privacy
+- Compliance with Regulations
+- Integration with Financial Tools
+- Support Agent to be built using Langchain
+- Use of Financial APIs for real-time data
+- Use of LLMs for natural language processing and generation
+- Use of Databases for storing user data and preferences
+- Use of Frontend Frameworks for building user interface
+- Use of Backend Frameworks for handling business logic and data processing
+- Use of Cloud Services for hosting and scalability
+- Use of DevOps Tools for continuous integration and deployment
+- Use of Testing Frameworks for ensuring quality and reliability
+- Use of Analytics Tools for tracking user behavior and improving user experience
+- Use of Monitoring Tools for ensuring system health and performance
+- Use of Collaboration Tools for team communication and project management
+- Use of Documentation Tools for creating and maintaining project documentation
+- Use of Version Control Systems for managing code changes and collaboration
+- Use of Project Management Tools for planning and tracking project progress
+- Use of Design Tools for creating user interface and experience designs
+- Use of Prototyping Tools for creating and testing user interface prototypes
+- Use of Wireframing Tools for creating user interface wireframes
+- Use of Mockup Tools for creating user interface mockups
+- Use of User Testing Tools for gathering user feedback and improving user experience
+- Use of Accessibility Tools for ensuring accessibility compliance and improving user experience for all users
+- Use of Localization Tools for supporting multiple languages and regions
+- Use of SEO Tools for improving search engine visibility and driving traffic to the platform
+- Use of Social Media Tools for promoting the platform and engaging with users
+- Use of Email Marketing Tools for communicating with users and promoting the platform
+- Use of Content Management Systems for managing and publishing content on the platform
+- Use of E-commerce Tools for monetizing the platform and generating revenue
+- Use of Payment Processing Tools for handling payments and transactions on the platform
+- Use of Customer Support Tools for providing support and assistance to users
+- Use of Feedback Tools for gathering user feedback and improving the platform
+- Use of Survey Tools for gathering user feedback and improving the platform
+- Use of Analytics Tools for tracking user behavior and improving user experience
+- Use of Monitoring Tools for ensuring system health and performance
+- Use of Collaboration Tools for team communication and project management
+- Use of Documentation Tools for creating and maintaining project documentation
+- Use of Version Control Systems for managing code changes and collaboration
+- Use of Project Management Tools for planning and tracking project progress
+- Use of Design Tools for creating user interface and experience designs
+- Use of Prototyping Tools for creating and testing user interface prototypes
+- Create MCp server and Agnets using Langchain and distributing tasks.
+- Use semantic kernel for better search results.
+- Use user friendly prompts for specific topics and inputs.
+- Use of AI Models for generating personalized recommendations and insights
