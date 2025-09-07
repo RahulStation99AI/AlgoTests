@@ -20,10 +20,10 @@ namespace AiAgents.FinancialAdvisor.Agent
         {
             public string Endpoint { get; set; } = "https://agenticai-rahul.openai.azure.com/";
 
-            public string ApiKey { get; set; } ="";
+            //public string ApiKey { get; set; } ="";
 
             //Uncomment it to rumn locally
-            //public string ApiKey { get; set; } = "CQmkc9em0xl3xqGza6YlYihsMhIoocjynae99w2Wm5TprvUbAleHJQQJ99BIACMsfrFXJ3w3AAABACOGoYLR";
+            public string ApiKey { get; set; } = "CQmkc9em0xl3xqGza6YlYihsMhIoocjynae99w2Wm5TprvUbAleHJQQJ99BIACMsfrFXJ3w3AAABACOGoYLR";
             public string DeploymentName { get; set; } = "";
         }
 
