@@ -8,6 +8,10 @@ class Program
    
     static void Main(string[] args) 
     {
+        var sol = new Solution();
+        Console.WriteLine(" Find Pair Sums ");
+        PairSums.Test();
+        return;
         Console.WriteLine(" FindSum of Nubers ");
         SubSumInArray.RunTest();
         return;

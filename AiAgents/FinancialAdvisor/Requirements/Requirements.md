@@ -1,6 +1,6 @@
 Requirements for the Project
 =========================
-1. Create an AI agent whic works as financial advisor for retierment planning.
+1. Create an AI agent which works as financial advisor for retierment planning.
 
 Inputs:
 - Age
@@ -31,6 +31,7 @@ Outputs:
 - Risk Assessment
 - Debt Management Plan
 - Tax Optimization Strategy
+- SSN starts at age 62
 - Inflation Impact Analysis
 - Health and Longevity Considerations
 - Actionable Recommendations

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text.Json;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Orchestration;
+
 
 namespace AiAgents.FinancialAdvisor.Agent
 {
@@ -24,17 +24,19 @@ namespace AiAgents.FinancialAdvisor.Agent
 
             //Uncomment it to rumn locally
             public string ApiKey { get; set; } = "CQmkc9em0xl3xqGza6YlYihsMhIoocjynae99w2Wm5TprvUbAleHJQQJ99BIACMsfrFXJ3w3AAABACOGoYLR";
-            public string DeploymentName { get; set; } = "";
+            public string DeploymentName { get; set; } = "gpt-35-turbo";
         }
 
         private const string SystemPrompt = @"You are an expert financial advisor AI assistant. You provide professional, accurate, 
 and personalized retirement planning advice based on the user's financial information and goals. Keep responses concise and focused 
 on actionable recommendations.";
 
-        public static IKernel CreateKernel(AzureOpenAIConfig config)
+        public static Kernel CreateKernel(AzureOpenAIConfig config)
         {
-            var builder = new KernelBuilder();
-            builder.WithAzureChatCompletionService(
+            var builder = Kernel.CreateBuilder();
+
+            // Example: Add Azure OpenAI connector
+            builder.AddAzureOpenAIChatCompletion(
                 deploymentName: config.DeploymentName,
                 endpoint: config.Endpoint,
                 apiKey: config.ApiKey
@@ -42,7 +44,7 @@ on actionable recommendations.";
             return builder.Build();
         }
 
-        public FinancialAdvisorAgent(IKernel kernel)
+        public FinancialAdvisorAgent(Kernel kernel)
         {
             this.kernel = kernel;
         }
