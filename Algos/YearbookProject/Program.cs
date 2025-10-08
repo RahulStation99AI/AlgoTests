@@ -8,13 +8,16 @@ class Program
    
     static void Main(string[] args) 
     {
-        var sol = new Solution();
+        TestBST();
+
+        return;
+        //var sol = new Solution();
         Console.WriteLine(" Find Pair Sums ");
         PairSums.Test();
         return;
         Console.WriteLine(" FindSum of Nubers ");
         SubSumInArray.RunTest();
-        return;
+        
 
 
         Console.WriteLine("Running Algorithm Tests\n");
@@ -26,5 +29,21 @@ class Program
         var subArrayResult = SubArraysCount.RunTest();
 
         Console.WriteLine("\nAll tests completed.");
+    }
+
+    static void TestBST()
+    {
+        TreeNode root = new TreeNode(10);
+        root.Left = new TreeNode(5);
+        root.Right = new TreeNode(15);
+        root.Left.Right = new TreeNode(7);
+
+        var iterator = new BSTIterator(root);
+
+        while (iterator.HasNext())
+        {
+            Console.WriteLine(iterator.Next());
+        }
+        // Output: 5 7 10 15
     }
 }
