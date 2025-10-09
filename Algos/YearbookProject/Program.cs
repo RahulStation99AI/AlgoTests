@@ -10,11 +10,11 @@ class Program
     {
         TestBST();
 
-        return;
+        
         //var sol = new Solution();
         Console.WriteLine(" Find Pair Sums ");
         PairSums.Test();
-        return;
+        
         Console.WriteLine(" FindSum of Nubers ");
         SubSumInArray.RunTest();
         
