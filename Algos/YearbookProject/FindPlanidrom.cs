@@ -33,6 +33,7 @@ public class FindPlanidrom
         var planidroms = new List<string>();
         int n = str.Length;
 
+        // Check it to start from Center and expand.
         for (int i = 0; i < n; i++)
         {
             // Odd length planidroms
@@ -49,7 +50,7 @@ public class FindPlanidrom
         while (left >= 0 && right < str.Length && str[left] == str[right])
         {
             var planidrom = str.Substring(left, right - left + 1);
-            if (planidrom?.Length >= 3 && new HashSet<char>(planidrom).Count() > 1) // Avoid duplicates and length < 3
+            if (planidrom?.Length >= 3 && new HashSet<char>(planidrom).Count > 1) // Avoid duplicates and length < 3
             {
                 planidroms.Add(planidrom);
             }

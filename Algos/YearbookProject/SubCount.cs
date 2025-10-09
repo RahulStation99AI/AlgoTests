@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-// We don’t provide test cases in this language yet, but have outlined the signature for you. Please write your code below, and don’t forget to test edge cases!
+// We don’t provide test cases in this language yet, but have outlined the signature for you.
+// Please write your code below, and don’t forget to test edge cases!
 public class SubArraysCount {
   public static int[] RunTest() {
     Console.WriteLine("\nTesting SubArrays with array: [3,4,1,6,2]");
