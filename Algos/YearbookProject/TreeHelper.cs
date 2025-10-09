@@ -1,68 +1,72 @@
 
-public class TreeNode
+namespace Algos.Tree
 {
-    public int Val;
-    public TreeNode Left;
-    public TreeNode Right;
+    /// <summary>
+    /// Definition for a binary tree node.
+    /// </summary>
 
-    public TreeNode(int val)
+    public class TreeNode
     {
-        Val = val;
-    }
-}
+        public int Val;
+        public TreeNode Left;
+        public TreeNode Right;
 
-public class BSTIterator
-{
-    private TreeNode current;
-
-    public BSTIterator(TreeNode root)
-    {
-        current = root;
-    }
-
-    public bool HasNext()
-    {
-        return current != null;
-    }
-
-    public int Next()
-    {
-        int result = -1;
-
-        while (current != null)
+        public TreeNode(int val)
         {
-            if (current.Left == null)
-            {
-                result = current.Val;
-                current = current.Right;
-                break;
-            }
-            else
-            {
-                TreeNode predecessor = current.Left;
-                while (predecessor.Right != null && predecessor.Right != current)
-                {
-                    predecessor = predecessor.Right;
-                }
+            Val = val;
+        }
+    }
 
-                if (predecessor.Right == null)
+    public class BSTIterator
+    {
+        private TreeNode current;
+
+        public BSTIterator(TreeNode root)
+        {
+            current = root;
+        }
+
+        public bool HasNext()
+        {
+            return current != null;
+        }
+
+        public int Next()
+        {
+            int result = -1;
+
+            while (current != null)
+            {
+                if (current.Left == null)
                 {
-                    predecessor.Right = current;
-                    current = current.Left;
-                }
-                else
-                {
-                    predecessor.Right = null;
                     result = current.Val;
                     current = current.Right;
                     break;
                 }
+                else
+                {
+                    TreeNode predecessor = current.Left;
+                    while (predecessor.Right != null && predecessor.Right != current)
+                    {
+                        predecessor = predecessor.Right;
+                    }
+
+                    if (predecessor.Right == null)
+                    {
+                        predecessor.Right = current;
+                        current = current.Left;
+                    }
+                    else
+                    {
+                        predecessor.Right = null;
+                        result = current.Val;
+                        current = current.Right;
+                        break;
+                    }
+                }
             }
+
+            return result;
         }
-
-        return result;
     }
-
-   
-
 }

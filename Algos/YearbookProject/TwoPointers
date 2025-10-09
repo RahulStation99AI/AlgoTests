@@ -1,0 +1,41 @@
+/*
+Given an array height[] of non-negative integers, each representing the height of a vertical line at that index, find the two lines that together with the x-axis form a container that holds the most water.
+
+*/
+namespace Algos.TwoPointers
+{
+    using System;
+    public class TwoPointers
+    {
+        public int MaxArea(int[] height)
+        {
+            int left = 0;
+            int right = height.Length - 1;
+            int maxArea = 0;
+
+            while (left < right)
+            {
+                int h = Math.Min(height[left], height[right]);
+                int w = right - left;
+                int area = h * w;
+                maxArea = Math.Max(maxArea, area);
+                Console.WriteLine($"Left: {left}, Right: {right}, Height: {h}, Width: {w}, Area: {area}, MaxArea: {maxArea}");
+                // Move the pointer pointing to the shorter line
+                if (height[left] < height[right])
+                    left++;
+                else
+                    right--;
+            }
+
+            return maxArea;
+        }
+
+        public static void Test()
+        {
+            TwoPointers solution = new TwoPointers();
+            int[] height = { 1, 8, 6, 2, 5, 4, 8, 3, 7 };
+            int result = solution.MaxArea(height);
+            Console.WriteLine(result); // Output: 49
+        }
+    }
+}

@@ -1,17 +1,21 @@
 using System;
 
+using Algos;
+using Algos.Tree;
+using Algos.TwoPointers;
+
 /// <summary>
 /// Main program class that runs various algorithm tests
 /// </summary>
 class Program 
 {
-   
-    static void Main(string[] args) 
+    static void Main(string[] args)
     {
+        TwoPointers.Test();
         TestBST();
 
         return;
-        //var sol = new Solution();
+       /*
         Console.WriteLine(" Find Pair Sums ");
         PairSums.Test();
         return;
@@ -29,6 +33,7 @@ class Program
         var subArrayResult = SubArraysCount.RunTest();
 
         Console.WriteLine("\nAll tests completed.");
+        */
     }
 
     static void TestBST()

@@ -1,5 +1,5 @@
 
-namespace TestNameSpace
+namespace Alogs
 {
 
     using System;
