@@ -18,8 +18,6 @@ class Program
         Console.WriteLine(" FindSum of Nubers ");
         SubSumInArray.RunTest();
         
-
-
         Console.WriteLine("Running Algorithm Tests\n");
 
         // Test PassingYearbooks
