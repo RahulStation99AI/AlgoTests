@@ -12,6 +12,12 @@ class Program
 {
     static void Main(string[] args)
     {
+        IntervalMerger.Test();
+         return;
+        LongestPalindromeFinder.Test();
+
+       
+
         Console.WriteLine(" Running Given an array height[] of non-negative integers, each representing the height of a vertical line at that index, find the two lines that together with the x-axis form a container that holds the most water.\n");
         TwoPointers.Test();
         Console.WriteLine(" Binary Search Tree Iterator ");
