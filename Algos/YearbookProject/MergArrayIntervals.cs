@@ -46,17 +46,20 @@ Rahul, do you want me to also add xUnit/NUnit test cases for each of these so yo
             {
             new int[]{1,3},
             new int[]{2,6},
-            new int[]{2,8},
-            new int[]{8,10},
-            new int[]{15,18}
+            new int[]{12,180},
+            new int[]{6,10},
+            new int[]{90,108}
             };
 
+           
+            Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
             foreach (var interval in intervals)
             {
                 Console.WriteLine($"Input: [{interval[0]}, {interval[1]}]");
-            }
+            } 
             
-            var result = Merge(intervals);
+             var result = Merge(intervals);
+
             foreach (var interval in result)
             {
                 Console.WriteLine($"Result: [{interval[0]}, {interval[1]}]");
