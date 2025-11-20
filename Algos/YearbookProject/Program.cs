@@ -12,9 +12,12 @@ class Program
 {
     static void Main(string[] args)
     {
+        AtlassianCoding.Test();
+
+        return;
         CoinChangeBacktrack.Test();
         
-         return;
+        
         LongestPalindromeFinder.Test();
 
        IntervalMerger.Test();
