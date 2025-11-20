@@ -2,51 +2,33 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text.Json;
-using Microsoft.SemanticKernel;
 
 
 namespace AiAgents.FinancialAdvisor.Agent
 {
     /// <summary>
     /// Main AI agent for financial advisory tasks, based on requirements and design.
+    /// This implementation currently provides simulated responses so the project builds
+    /// without external Semantic Kernel dependencies. Replace simulated logic with
+    /// real kernel/LLM calls when the Semantic Kernel packages and configuration are available.
     /// </summary>
     public class FinancialAdvisorAgent
     {
-        private readonly IKernel kernel;
         private Dictionary<string, object> userInputs = new();
         
-        // Azure OpenAI Configuration
+        // Azure OpenAI Configuration (kept for future use)
         public class AzureOpenAIConfig
         {
             public string Endpoint { get; set; } = "https://agenticai-rahul.openai.azure.com/";
-
-            //public string ApiKey { get; set; } ="";
-
-            //Uncomment it to rumn locally
-            public string ApiKey { get; set; } = "CQmkc9em0xl3xqGza6YlYihsMhIoocjynae99w2Wm5TprvUbAleHJQQJ99BIACMsfrFXJ3w3AAABACOGoYLR";
+            public string ApiKey { get; set; } = string.Empty;
             public string DeploymentName { get; set; } = "gpt-35-turbo";
         }
 
-        private const string SystemPrompt = @"You are an expert financial advisor AI assistant. You provide professional, accurate, 
-and personalized retirement planning advice based on the user's financial information and goals. Keep responses concise and focused 
-on actionable recommendations.";
+        private const string SystemPrompt = "You are an expert financial advisor AI assistant. Provide concise, actionable retirement planning advice.";
 
-        public static Kernel CreateKernel(AzureOpenAIConfig config)
+        // Parameterless constructor to avoid requiring external kernel at build time
+        public FinancialAdvisorAgent()
         {
-            var builder = Kernel.CreateBuilder();
-
-            // Example: Add Azure OpenAI connector
-            builder.AddAzureOpenAIChatCompletion(
-                deploymentName: config.DeploymentName,
-                endpoint: config.Endpoint,
-                apiKey: config.ApiKey
-            );
-            return builder.Build();
-        }
-
-        public FinancialAdvisorAgent(Kernel kernel)
-        {
-            this.kernel = kernel;
         }
 
         // List of prompts based on requirements
@@ -85,91 +67,38 @@ on actionable recommendations.";
             }
         }
 
-        // Main agent logic: process collected inputs and generate a sample answer
+        // Main agent logic: process collected inputs and generate a simulated answer
         public async Task<string> AdviseAsync()
         {
             if (userInputs.Count == 0)
                 return "No user data collected. Please provide inputs.";
 
-            var context = new ContextVariables();
-            context.Set("systemPrompt", SystemPrompt);
+            var userDataJson = JsonSerializer.Serialize(userInputs, new JsonSerializerOptions { WriteIndented = true });
 
-            // Format user data into a structured input
-            var userData = new
-            {
-                Age = Convert.ToInt32(userInputs["Age"] ?? 0),
-                CurrentSavings = new
-                {
-                    Taxable = Convert.ToDouble(userInputs["CurrentSavings_Taxable"] ?? 0),
-                    IRA = Convert.ToDouble(userInputs["CurrentSavings_IRA"] ?? 0),
-                    _401K = Convert.ToDouble(userInputs["CurrentSavings_401K"] ?? 0),
-                    RothIRA = Convert.ToDouble(userInputs["CurrentSavings_RothIRA"] ?? 0)
-                },
-                AnnualIncome = Convert.ToDouble(userInputs["AnnualIncome"] ?? 0),
-                MonthlyContribution = Convert.ToDouble(userInputs["MonthlyContribution"] ?? 0),
-                ExpectedRetirementAge = Convert.ToInt32(userInputs["ExpectedRetirementAge"] ?? 65),
-                DesiredRetirementIncome = Convert.ToDouble(userInputs["DesiredRetirementIncome"] ?? 0),
-                RiskTolerance = userInputs["RiskTolerance"]?.ToString(),
-                InvestmentPreferences = userInputs["InvestmentPreferences"]?.ToString(),
-                CurrentDebt = Convert.ToDouble(userInputs["CurrentDebt"] ?? 0),
-                OtherIncomeSources = userInputs["OtherIncomeSources"]?.ToString(),
-                InflationRate = Convert.ToDouble(userInputs["InflationRate"]?.ToString()?.TrimEnd('%') ?? "2.5") / 100,
-                LifeExpectancy = Convert.ToInt32(userInputs["LifeExpectancy"] ?? 85),
-                MarketConditions = userInputs["MarketConditions"]?.ToString(),
-                TaxConsiderations = userInputs["TaxConsiderations"]?.ToString(),
-                HealthStatus = userInputs["HealthStatus"]?.ToString()
-            };
-
-            // Create the prompt for retirement planning analysis
-            string prompt = $@"Based on the following financial information, provide a detailed retirement planning analysis with specific recommendations:
-
-{JsonSerializer.Serialize(userData, new JsonSerializerOptions { WriteIndented = true })}
-
-Please include:
-1. Retirement readiness assessment
-2. Projected retirement savings
-3. Specific recommendations for improving retirement readiness
-4. Tax optimization strategies
-5. Risk management considerations
-
-Focus on actionable advice and specific steps the user can take.";
-
-            context.Set("input", prompt);
-
-            // Use Semantic Kernel to get AI-powered advice
-            var result = await kernel.InvokeSemanticFunctionAsync(context);
-
-            return result.GetValue<string>() ?? "Unable to generate advice at this time.";
+            // Simulated analysis - replace with real LLM/Kernel invocation
+            await Task.Yield();
+            return $"[Simulated Advice]\nSystemPrompt: {SystemPrompt}\nUserData:\n{userDataJson}\n\nRecommendations: Start increasing monthly contributions, reduce high-interest debt, consider tax-advantaged accounts. (Replace with real AI output)";
         }
 
         public async Task<string> GetQuickAdviceAsync(string question)
         {
-            var context = new ContextVariables();
-            context.Set("systemPrompt", SystemPrompt);
-            context.Set("input", $"Based on the following user data:\n{JsonSerializer.Serialize(userInputs, new JsonSerializerOptions { WriteIndented = true })}\n\nPlease answer this specific question: {question}");
-
-            var result = await kernel.InvokeSemanticFunctionAsync(context);
-            return result.GetValue<string>() ?? "Unable to provide advice at this time.";
+            var userDataJson = JsonSerializer.Serialize(userInputs, new JsonSerializerOptions { WriteIndented = true });
+            await Task.Yield();
+            return $"[Simulated Quick Advice] Question: {question}\nUserData:\n{userDataJson}\nAnswer: (Simulated) Consider adjusting contributions based on cashflow and risk tolerance.";
         }
 
         public async Task<string> AnalyzeScenarioAsync(string scenario)
         {
-            var context = new ContextVariables();
-            context.Set("systemPrompt", SystemPrompt);
-            context.Set("input", $"Given the user's financial profile:\n{JsonSerializer.Serialize(userInputs, new JsonSerializerOptions { WriteIndented = true })}\n\nAnalyze this scenario: {scenario}\n\nProvide specific recommendations and impact analysis.");
-
-            var result = await kernel.InvokeSemanticFunctionAsync(context);
-            return result.GetValue<string>() ?? "Unable to analyze scenario at this time.";
+            var userDataJson = JsonSerializer.Serialize(userInputs, new JsonSerializerOptions { WriteIndented = true });
+            await Task.Yield();
+            return $"[Simulated Scenario Analysis] Scenario: {scenario}\nUserData:\n{userDataJson}\nImpact: (Simulated) Scenario may increase/decrease required savings by X%.";
         }
 
         public async Task<string> GetInvestmentAdviceAsync(double amount, string timeframe, string riskLevel)
         {
-            var context = new ContextVariables();
-            context.Set("systemPrompt", SystemPrompt);
-            context.Set("input", $"Considering the user's financial profile and these specific parameters:\n- Amount: ${amount:N0}\n- Timeframe: {timeframe}\n- Risk Level: {riskLevel}\n\nProvide specific investment recommendations and allocation advice.");
-
-            var result = await kernel.InvokeSemanticFunctionAsync(context);
-            return result.GetValue<string>() ?? "Unable to provide investment advice at this time.";
+            var userDataJson = JsonSerializer.Serialize(userInputs, new JsonSerializerOptions { WriteIndented = true });
+            await Task.Yield();
+            return $"[Simulated Investment Advice] Amount: {amount:C0}, Timeframe: {timeframe}, Risk: {riskLevel}\nUserData:\n{userDataJson}\nAllocation: (Simulated) 60% equities, 30% bonds, 10% cash depending on risk.";
         }
     }
 }
