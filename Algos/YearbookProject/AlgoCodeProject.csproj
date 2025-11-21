@@ -6,5 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{c8e6f3e1-4f7b-4d0c-9d3a-1e2b5f6c7d8e}</ProjectGuid>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <RootNamespace>Algos</RootNamespace>
+    <AssemblyName>Algos</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects> 
+    </PropertyGroup>
 </Project>

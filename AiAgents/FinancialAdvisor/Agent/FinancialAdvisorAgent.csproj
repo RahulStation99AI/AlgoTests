@@ -6,5 +6,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.64.0" />
+   <!-- <PackageReference Include="Microsoft.SemanticKernel.Orchestration" Version="1.64.0" />
+     <PackageReference Include="Microsoft.SemanticKernel.Connectors.AI.OpenAI" Version="1.64.0" />
+	-->
   </ItemGroup>
 </Project>

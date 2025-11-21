@@ -1,3 +1,6 @@
+namespace Alogs
+{
+ 
 using System;
 using System.Collections.Generic;
 
@@ -180,4 +183,5 @@ public class SubSumInArray
 
         return false;
     }
+}
 }

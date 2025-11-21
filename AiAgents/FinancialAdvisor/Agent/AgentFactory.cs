@@ -7,7 +7,7 @@ namespace AiAgents.FinancialAdvisor.Agent
     {
         public static FinancialAdvisorAgent CreateDefaultAgent()
         {
-            // TODO: Add configuration, dependency injection, etc.
+            // Return a parameterless FinancialAdvisorAgent (simulated) to avoid external dependencies during build
             return new FinancialAdvisorAgent();
         }
     }
