@@ -3,20 +3,28 @@ namespace Alogs
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
 
     /*
      * Problem Description:
-     * 
+     
      */
-    public class AtlassianCoding
+    public class SanjibCodingTest
     {
 
         /*
                 Desription: 
 
-                Steps:
+                Error Cases:
 
                 Edge Case:
+
+                Algo:
+
+                Steps:
+
+               
 
                 Error Handling:
 

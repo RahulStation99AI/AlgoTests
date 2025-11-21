@@ -12,6 +12,8 @@ class Program
 {
     static void Main(string[] args)
     {
+        SanjibCodingTest.Test();
+
         AtlassianCoding.Test();
 
         return;
