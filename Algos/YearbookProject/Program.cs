@@ -12,14 +12,14 @@ class Program
 {
     static void Main(string[] args)
     {
-        SanjibCodingTest.Test();
+        BST.Test();
 
-        AtlassianCoding.Test();
+        //AtlassianCoding.Test();
 
         return;
+
         CoinChangeBacktrack.Test();
-        
-        
+                
         LongestPalindromeFinder.Test();
 
        IntervalMerger.Test();
