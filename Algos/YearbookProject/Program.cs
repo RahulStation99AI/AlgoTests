@@ -12,6 +12,9 @@ class Program
 {
     static void Main(string[] args)
     {
+        SubSumInArrayWithMaxM.RunTest();
+        return;
+
         BST.Test();
 
         //AtlassianCoding.Test();
