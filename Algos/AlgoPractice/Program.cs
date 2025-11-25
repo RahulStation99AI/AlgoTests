@@ -12,6 +12,7 @@ class Program
 {
     static void Main(string[] args)
     {
+        FindTargetInRotateArray.Test();
         SubSumInArrayWithMaxM.RunTest();
         return;
 
