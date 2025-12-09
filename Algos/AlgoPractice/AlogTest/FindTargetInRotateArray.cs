@@ -14,9 +14,12 @@ namespace Alogs
             int k = 6;
             int result = searchRotatedTimestamps(arr.ToList(), k);
             Console.WriteLine(result);
-
+            result = SearchRotatedTimestampsWithRotationPoint(arr.ToList(), k);
+            Console.WriteLine(result);
             k = 0;
             result = searchRotatedTimestamps(arr.ToList(), k);
+            Console.WriteLine(result);
+            result = SearchRotatedTimestampsWithRotationPoint(arr.ToList(), k);
             Console.WriteLine(result);
         }
 
@@ -56,5 +59,56 @@ namespace Alogs
             return -1; // Target not found
         }
 
+        // Alternate Solution
+        public static int SearchRotatedTimestampsWithRotationPoint(List<int> nums, int target)
+        {
+            if (nums == null || nums.Count == 0)
+                return -1;
+
+            // First find the rotation point (index of minimum element)
+            int left = 0;
+            int right = nums.Count - 1;
+            int rotationPoint = 0;
+
+            // Find the rotation point
+            while (left < right)
+            {
+                int mid = left + (right - left) / 2; 
+                if (nums[mid] > nums[right]) 
+                    left = mid + 1;
+                else
+                    right = mid;
+                rotationPoint = left; // After the loop, left will be at the minimum element
+            }
+
+            // Now determine which half to search
+            int start, end;
+            if (target >= nums[0] && rotationPoint > 0 &&  nums[rotationPoint - 1] <= target)
+            {
+                // Target is in the first half
+                start = 0;
+                end = rotationPoint - 1;
+            }
+            else
+            {
+                // Target is in the second half
+                start = rotationPoint;
+                end = nums.Count - 1;
+            }
+
+            // Perform standard binary search
+            while (start <= end)
+            {
+                int mid = start + (end - start) / 2; 
+                if (nums[mid] == target)
+                    return mid;
+                else if (nums[mid] < target)
+                    start = mid + 1;
+                else
+                    end = mid - 1;
+            }
+
+            return -1; // Not found
+        }
     }
 }

@@ -115,7 +115,7 @@ namespace Alogs
                 }
             }
 
-            // Case 2: Node to be deleted has one child.
+            // Case 2: Node to be deleted has one child. Both null case already checked.
             else if (currentNode.Left == null || currentNode.Right == null)
             {
                 BSTTreeNode childNode = currentNode.Left ?? currentNode.Right;
@@ -136,7 +136,7 @@ namespace Alogs
            // Case 3: Node to be deleted has two children.
             else
             {
-                // Find the inorder successor (smallest in the right subtree).
+                // Find the inorder successor (smallest (Left most Node) in the right subtree).
                 BSTTreeNode successorParent = currentNode;
                 BSTTreeNode successor = currentNode.Right;
                 while (successor.Left != null)
@@ -170,7 +170,6 @@ namespace Alogs
 
         }
 
-
         BSTTreeNode BSFToIndex(int indexIntree, BSTTreeNode root)
         {   
            if (indexIntree > NumOfNodes) return null;
@@ -179,7 +178,7 @@ namespace Alogs
 
             nodeList.Enqueue(root);
 
-            int count =1;
+            int count =1; // Root already added.
             BSTTreeNode curNode = null;
 
             while (nodeList.Count > 0)
@@ -310,7 +309,7 @@ namespace Alogs
 
         public static void Test()
         {
-            int[] nodes = { 7, 5, 6, 1,8, 3, 4, 10, 12,11 };
+            int[] nodes = { 10, 5, 11, 6,2, 1,8, 3, 4,15,7, 13,0, 12,121 };
             var binarySearchTree = new BST();
 
             foreach(int nodeValue in nodes)
@@ -323,6 +322,11 @@ namespace Alogs
             binarySearchTree.PrintNodesBFS(binarySearchTree.Root);
 
             var node = binarySearchTree.GetRandomNode();
+            
+            binarySearchTree.DeleteNode(2);
+            Console.WriteLine("After Deletion of 6");
+            Console.WriteLine("BFS tree");
+            binarySearchTree.PrintNodesBFS(binarySearchTree.Root);
 
             binarySearchTree.DeleteNode(8);
             Console.WriteLine("After Deletion of 8");
@@ -334,10 +338,7 @@ namespace Alogs
             Console.WriteLine("BFS tree");
             binarySearchTree.PrintNodesBFS(binarySearchTree.Root);
 
-            binarySearchTree.DeleteNode(4);
-            Console.WriteLine("After Deletion of 4");
-            Console.WriteLine("BFS tree");
-            binarySearchTree.PrintNodesBFS(binarySearchTree.Root);
+           
 
             Console.WriteLine($"No of Nodes: {binarySearchTree.NumOfNodes}");
         }

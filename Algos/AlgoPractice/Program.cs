@@ -1,9 +1,10 @@
-using System;
-
 using Algos;
+using Algos.AlogTest;
 using Algos.Tree;
 
 using Alogs;
+
+using System;
 
 /// <summary>
 /// Main program class that runs various algorithm tests
@@ -12,11 +13,14 @@ class Program
 {
     static void Main(string[] args)
     {
+        var result = MatchingTarget.Test();
+        return;
+        BST.Test();
         FindTargetInRotateArray.Test();
         SubSumInArrayWithMaxM.RunTest();
         return;
 
-        BST.Test();
+       
 
         //AtlassianCoding.Test();
 

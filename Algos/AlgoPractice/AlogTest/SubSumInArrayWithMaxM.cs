@@ -88,6 +88,8 @@
 
         private static long countSubarraysWithSumAndMaxAtMost(int[] nums, long targetSum, long maxElementValue)
         {
+            if(nums == null || nums.Length == 0) return 0;
+
             long count = 0; // total valid subarrays
             int n = nums.Length;
 
@@ -95,7 +97,8 @@
             while (start < n)
             {
                 // Skip invalid elements (greater than M)
-                while (start < n && nums[start] > maxElementValue) start++;
+                while (start < n && nums[start] > maxElementValue) 
+                    start++;
                 if (start >= n) break;
 
                 // Find contiguous segment where all elements ≤ M
@@ -113,16 +116,30 @@
                     currentSum += nums[i];
 
                     // If currentSum - targetSum exists, we found subarray(s)
+                    /*
+                        - Maintain a map from prefix sum → list of indices where that sum occurred.
+                        - When we find currentSum - targetSum in the dictionary, we know that the subarray between the stored index+1 and the current index is valid.
+                        - Collect those subarrays (start and end indices, or the actual slice of the array).
+                        - We check currentSum - targetSum because prefix sums work by subtracting an earlier sum from the current sum to isolate the subarray in between. 
+                        If that earlier sum exists in our dictionary, the difference equals the target, meaning we’ve found a valid subarray.
+                     */
                     if (prefixSumIndices.ContainsKey(currentSum - targetSum))
                     {
                         foreach (var prevIndex in prefixSumIndices[currentSum - targetSum])
                         {
-                            count++;
-                            // Print the subarray
                             int subStart = prevIndex + 1;
                             int subEnd = i;
-                            var subArray = nums[subStart..(subEnd + 1)];
-                            Console.WriteLine($"Subarray found (indices {subStart}-{subEnd}): [{string.Join(", ", subArray)}]");
+
+                            // Verify actual sum before printing
+                            long actualSum = 0;
+                            for (int j = subStart; j <= subEnd; j++) actualSum += nums[j];
+
+                            if (actualSum == targetSum)
+                            {
+                                count++;
+                                var subArray = nums[subStart..(subEnd + 1)];
+                                Console.WriteLine($"Subarray found (indices {subStart}-{subEnd}): [{string.Join(", ", subArray)}]");
+                            }
                         }
                     }
 

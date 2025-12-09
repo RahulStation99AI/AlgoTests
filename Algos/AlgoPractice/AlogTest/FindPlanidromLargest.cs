@@ -8,55 +8,55 @@ namespace Alogs
     // Example: "madam" is a planidrom, "hello" is not a planidrom.
 
 
-public static class LongestPalindromeFinder
-{
-    public static string LongestPalindrome(string s)
+    public static class LongestPalindromeFinder
     {
-        if (string.IsNullOrEmpty(s)) return "";
-
-        int start = 0, maxLength = 1;
-
-      
-        for (int i = 0; i < s.Length; i++)
+        public static string LongestPalindrome(string s)
         {
-            // Odd length palindrome
-            ExpandAroundCenter(s, i, i, ref start, ref maxLength);
+            if (string.IsNullOrEmpty(s)) return "";
 
-            // Even length palindrome
-            ExpandAroundCenter(s, i, i + 1, ref start, ref maxLength);
-        }
+            int start = 0, maxLength = 1;
 
-        return s.Substring(start, maxLength);
-    }
 
-    private static void ExpandAroundCenter(string s, int left, int right, ref int start, ref int maxLength)
-        {
-         Console.WriteLine($"Start planidrom: {left}, {right}");
-        while (left >= 0 && right < s.Length && s[left] == s[right])
-        {
-            int currentLength = right - left + 1;
-            if (currentLength > maxLength)
+            for (int i = 0; i < s.Length; i++)
             {
-                maxLength = currentLength;
-                start = left;
+                // Odd length palindrome
+                ExpandAroundCenter(s, i, i, ref start, ref maxLength);
+
+                // Even length palindrome
+                ExpandAroundCenter(s, i, i + 1, ref start, ref maxLength);
             }
-            left--;
-            right++;
-            
-            Console.WriteLine($"Found planidrom: {start}, {right}");
+
+            return s.Substring(start, maxLength);
+        }
+
+        private static void ExpandAroundCenter(string s, int left, int right, ref int start, ref int maxLength)
+        {
+            Console.WriteLine($"Start planidrom: {left}, {right}");
+            while (left >= 0 && right < s.Length && s[left] == s[right])
+            {
+                int currentLength = right - left + 1;
+                if (currentLength > maxLength)
+                {
+                    maxLength = currentLength;
+                    start = left;
+                }
+                left--;
+                right++;
+
+                Console.WriteLine($"Found planidrom: {start}, {right}");
+            }
+        }
+
+        public static void Test()
+        {
+            string input = "babad";
+            Console.WriteLine("Input: " + input);
+            Console.WriteLine("Longest Palindrome: " + LongestPalindrome(input));
+
+            input = "efacdbbdcafl";
+            Console.WriteLine("Input: " + input);
+            Console.WriteLine("Longest Palindrome: " + LongestPalindrome(input));
         }
     }
 
-    public static void Test()
-    {
-        string input = "babad";
-        Console.WriteLine("Input: " + input);
-        Console.WriteLine("Longest Palindrome: " + LongestPalindrome(input));
-
-        input = "efacdbbdcafl";
-        Console.WriteLine("Input: " + input);
-        Console.WriteLine("Longest Palindrome: " + LongestPalindrome(input));
-    }
 }
-
-    }
