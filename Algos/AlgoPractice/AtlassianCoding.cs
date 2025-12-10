@@ -8,7 +8,7 @@ namespace Alogs
      * Problem Description:
      * 
      */
-    public class AtlassianCoding
+    public static class AtlassianCoding
     {
 
         /*
@@ -29,19 +29,8 @@ namespace Alogs
 
         private static int Helper(int[] coins, int amount, Dictionary<int, int> memo)
         {
-            if (amount == 0) return 0;
-            if (amount < 0) return int.MaxValue;
-            if (memo.ContainsKey(amount)) return memo[amount];
+            int min = -1;
 
-            int min = int.MaxValue;
-            foreach (int coin in coins)
-            {
-                int res = Helper(coins, amount - coin, memo);
-                if (res != int.MaxValue)
-                    min = Math.Min(min, res + 1);
-            }
-
-            memo[amount] = min;
             return min;
         }
 
@@ -52,7 +41,14 @@ namespace Alogs
 
             int result = CodingProblem(coins, amount);
             Console.WriteLine("Backtracking result: " + result);
+
+            PrintResults();
             // Output: 2 (3 + 3), whereas greedy would give 3 (4 + 1 + 1)
+        }
+
+        public static void PrintResults()
+        { 
+        
         }
     }
 }

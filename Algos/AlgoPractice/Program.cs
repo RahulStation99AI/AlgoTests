@@ -13,18 +13,16 @@ class Program
 {
     static void Main(string[] args)
     {
-        var result = MatchingTarget.Test();
+        AtlassianCoding.Test();
         return;
+
+
+        var result = MatchingTarget.Test();
+       
         BST.Test();
         FindTargetInRotateArray.Test();
         SubSumInArrayWithMaxM.RunTest();
-        return;
-
        
-
-        //AtlassianCoding.Test();
-
-        return;
 
         CoinChangeBacktrack.Test();
                 
