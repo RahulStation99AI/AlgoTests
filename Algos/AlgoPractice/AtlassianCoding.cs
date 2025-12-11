@@ -6,13 +6,42 @@ namespace Alogs
 
     /*
      * Problem Description:
+     * /**
+
+        We want to implement a middleware router for our web service, which based on the path returns different strings (these would represent “functions to invoke” in a real application).
+
+        Our interface for the router looks something like:
+
+        Router.addRoute("/bar", "result")
+        Router.callRoute("/bar") -> "result"
+
+        interface Router {
+          fun addRoute(path: String, result: String) : Unit;
+          fun callRoute(path: String) : String;
+        }
+        Usage:
+        Router.addRoute("/bar", "result")
+
+    Scale up 1: Wildcard Matching Paths
+
+Extend the route declarations such that we can have wildcards in the paths.
+
+Router router = Router()
+router.addRoute("/foo", "foo")
+router.addRoute("/bar/*/baz", "bar")
+*/
      * 
      */
-    public static class AtlassianCoding
+using System.Text.RegularExpressions;
+
+    public class AtlassianCoding
     {
 
         /*
                 Desription: 
+        Map<string, string>
+        Add =-> Check and Add or Update.
+        Call -> Lookup the Map and return result.
 
                 Steps:
 
@@ -21,34 +50,131 @@ namespace Alogs
                 Error Handling:
 
         */
-        public static int CodingProblem(int[] coins, int amount)
+
+        private readonly Dictionary<string, string> MapDict = new Dictionary<string, string>();
+        
+        public uint AddRoute(string route, string result)
         {
-            int result = Helper(coins, amount, new Dictionary<int, int>());
-            return result == int.MaxValue ? -1 : result;
+            if (string.IsNullOrEmpty(route))
+            { 
+                throw new ArgumentNullException($"Invalid Argument: {route}");
+            }
+
+            if( string.IsNullOrEmpty(result))
+            {
+                throw new ArgumentNullException($"Invalid Argument {result}"); 
+            }
+
+            if (!MapDict.ContainsKey(route))
+            {
+                MapDict.Add(route, result);
+            }
+            else
+            {
+                MapDict[route] = result;
+            }
+
+            return (uint) MapDict.Count;
         }
 
-        private static int Helper(int[] coins, int amount, Dictionary<int, int> memo)
-        {
-            int min = -1;
 
-            return min;
+        public string CallRoute(string route)
+        {
+            // router.addRoute("/xyz/*/baz/*", "foo2")
+            // router.addRoute("/foo/*/baz/*", "foo2")
+            // router.addRoute("/bar/*/baz/*", "bar")
+            // router.addRoute("/bar/*/foo/*", "foo")
+            // router.addRoute("/foo/*/foo/*", "foo")
+
+            // route.CallRoute("/bar/foo/baz/xyz")
+            if (string.IsNullOrEmpty(route))
+            {
+                throw new ArgumentNullException($"Invalid Argument: {route}");
+            }
+
+            var routes = route.Split("/");
+
+            if (!MapDict.ContainsKey(route))
+            {
+                throw new InvalidOperationException($"{route} route doesn't exist");
+            }
+
+            
+            foreach(var r in MapDict)
+            {
+                var regEx = r.Key;
+                var target = r.Key.Split("/");
+
+
+                if (regEx.Contains("*")) // If regEx match needed.
+                {
+                    var reg = new Regex(regEx);
+
+                    if (reg.Matches(route))
+                    {
+                        return r.Value;
+                    }
+                }
+                else
+                {
+
+                    if (routes[0] == target[0])
+                    {
+                        return r.Value;
+                    }
+
+                    if (r.Key == route)
+                    {
+                        return r.Value;
+                    }
+                }
+            }
+           
+            return MapDict[route];
         }
+
 
         public static void Test()
         {
-            int[] coins = { 1, 3, 4 };
-            int amount = 6;
+            string result = "Result";
+            AtlassianCoding test = new AtlassianCoding();
+            test.AddRoute("/bar", result);
 
-            int result = CodingProblem(coins, amount);
-            Console.WriteLine("Backtracking result: " + result);
+            var res = test.CallRoute("/bar");
+            if(res != result)
+            {
+                Console.WriteLine($"expected: {result}, Got: {res}");
+            }
 
-            PrintResults();
-            // Output: 2 (3 + 3), whereas greedy would give 3 (4 + 1 + 1)
+            try
+            {
+                test.AddRoute("", "result"); //  Error case
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            try
+            { 
+            test.AddRoute("/bar", ""); // error case
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            try
+            { 
+            test.AddRoute("", ""); // error case
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
         }
 
-        public static void PrintResults()
-        { 
-        
         }
     }
 }
